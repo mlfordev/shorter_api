@@ -72,5 +72,8 @@ html, body, .app {
     bottom: 0;
     height: 100%;
     background-color: rgba(0,0,0,0.2);
+    background-image: url("../images/loader.gif");
+    background-position: center center;
+    background-repeat: no-repeat;
     z-index: 10;
 }
