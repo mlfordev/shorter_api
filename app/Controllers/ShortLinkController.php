@@ -7,6 +7,7 @@ use App\Core\HttpResponse;
 use App\Lib\Helper;
 use App\Models\ShortLink;
 use App\Services\ShortLinkService;
+use Exception;
 use Phact\Exceptions\InvalidConfigException;
 use Phact\Pagination\Pagination;
 
@@ -82,8 +83,12 @@ class ShortLinkController extends Controller
             return $this->json(['errors' => ['Укажите протокол в URL']], 422);
         }
 
-        if (!ShortLinkService::isUrlExists($url)) {
-            return $this->json(['errors' => ['URL не доступен']], 422);
+        try {
+            if (!ShortLinkService::isUrlExists($url)) {
+                return $this->json(['errors' => ['URL не доступен']], 422);
+            }
+        } catch (Exception $e) {
+            return new HttpResponse($e->getTraceAsString(),'Content-Type: text/plain; charset=UTF-8', 500);
         }
 
         $model = ShortLink::findByUrlOrCreate($url);
