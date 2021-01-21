@@ -88,7 +88,11 @@ class ShortLinkController extends Controller
                 return $this->json(['errors' => ['URL не доступен']], 422);
             }
         } catch (Exception $e) {
-            return new HttpResponse($e->getTraceAsString(),'Content-Type: text/plain; charset=UTF-8', 500);
+            return new HttpResponse(
+                $e->getMessage() . PHP_EOL
+                . $e->getLine() . ' line in ' . $e->getFile() . PHP_EOL
+                . $e->getTraceAsString(),'Content-Type: text/plain; charset=UTF-8', 500
+            );
         }
 
         $model = ShortLink::findByUrlOrCreate($url);

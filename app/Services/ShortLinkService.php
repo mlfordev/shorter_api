@@ -3,8 +3,9 @@
 namespace App\Services;
 
 use Algo26\IdnaConvert\Exception\AlreadyPunycodeException;
-use Algo26\IdnaConvert\ToIdn;
+use Algo26\IdnaConvert\Exception\InvalidCharacterException;
 use App\Lib\Helper;
+use App\Lib\ToIdn;
 
 class ShortLinkService
 {
@@ -29,9 +30,16 @@ class ShortLinkService
     /**
      * @param string $url
      * @return bool
+     * @throws InvalidCharacterException
      */
     public static function isUrlExists(string $url): bool
     {
+        $isUrlExists = self::hasResponse($url) ?: self::hasResponse(Helper::urlEncode($url));
+
+        if ($isUrlExists) {
+            return true;
+        }
+
         $IDN = new ToIdn();
 
         try {
@@ -40,13 +48,13 @@ class ShortLinkService
             $urlPunycode = $url;
         }
 
-        return (self::hasResponse($url) ?: self::hasResponse(Helper::urlEncode($url)))
-            || (self::hasResponse($urlPunycode) ?: self::hasResponse(Helper::urlEncode($urlPunycode)));
+        return self::hasResponse($urlPunycode) ?: self::hasResponse(Helper::urlEncode($urlPunycode));
     }
 
     /**
      * @param string $url
      * @return bool
+     * @throws InvalidCharacterException
      */
     public static function isStatus200(string $url): bool
     {
