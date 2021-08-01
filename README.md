@@ -1,3 +1,7 @@
+Сделано на самописе с использованием [ORM](https://github.com/mlfordev/shorter_api/tree/main/components) фреймворка https://github.com/phact-cmf/phact
+
+Мой самописный код - полностью папка [/app](https://github.com/mlfordev/shorter_api/tree/main/app)
+
 # Веб-приложение для сокращения ссылок
 
 Приложение предоставляет веб-интерфейс и REST API, поддерживающий различный функционал для различных ролей (их всего 2 - анонимный пользователь и администратор).
